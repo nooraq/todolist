@@ -3,44 +3,32 @@
     <h1 class="home-header">todos</h1>
     <div>
       <button class="home-itemalldone"
-      @click="BtnClick"
-      ref="itemalldone"
-      >
-      ></button>
-    <input type="text" 
-    placeholder="What needs to be done?" 
-    autofocus="autofocus"
-    autocomplete="off"
-    v-model="newitem"
-    @keydown.13="pushNewItem"
-    >
-    <ul>
-      <li
-      v-for="(item, index) of list"
-      :key="index"
-      @mouseenter="showDstryBtn(index)"
-      @mouseleave="notShowDstryBtn(index)"
-      >
-        <input 
-        type="checkbox"
-        ref="todolist"
-        @click="checkedChange(index)"
-        >
-        <label 
-        @dblclick="todoitemChange(index)"
-        >{{item.content}}</label>
-        <input
-        v-show="item.ifchange"
-        v-model="item.content"
-        @keydown.13="todoitemChange(index)"
-        @mouseleave="listernClick(index)"
-        >
-        <button
-        v-show="item.ifDestroyBtn"
-        @click="dstryItem(index)"
-        >x</button>
-      </li>
-    </ul>
+              @click="BtnClick"
+              ref="itemalldone">
+        ></button>
+      <input type="text"
+             placeholder="What needs to be done?"
+             autofocus="autofocus"
+             autocomplete="off"
+             v-model="newitem"
+             @keydown.13="pushNewItem">
+      <ul>
+        <li v-for="(item, index) of list"
+            :key="index"
+            @mouseenter="showDstryBtn(index)"
+            @mouseleave="notShowDstryBtn(index)">
+          <input type="checkbox"
+                 ref="todolist"
+                 @click="checkedChange(index)">
+          <label @dblclick="todoitemChange(index)">{{item.content}}</label>
+          <input v-show="item.ifchange"
+                 v-model="item.content"
+                 @keydown.13="todoitemChange(index)"
+                 @blur="todoitemChange(index)">
+          <button v-show="item.ifDestroyBtn"
+                  @click="dstryItem(index)">x</button>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -59,12 +47,15 @@ export default {
     }
   },
   computed: {
-    
+
   },
   data () {
     return {
       newitem: ''
     }
+  },
+  mounted () {
+
   },
   methods: {
     pushNewItem () {
@@ -84,16 +75,16 @@ export default {
           checkeditem += 1
         }
       })
-      if( checkeditem === this.list.length) {
-        this.$refs.todolist.forEach((value,index) => {
+      if (checkeditem === this.list.length) {
+        this.$refs.todolist.forEach((value, index) => {
           value.checked = false
           this.list[index].ifdone = false
-      })
-      }else {
-        this.$refs.todolist.forEach((value,index) => {
+        })
+      } else {
+        this.$refs.todolist.forEach((value, index) => {
           value.checked = true
           this.list[index].ifdone = true
-      })
+        })
       }
     },
     todoitemChange (index) {
@@ -107,22 +98,23 @@ export default {
       this.list[index].ifDestroyBtn = false
     },
     dstryItem (index) {
-      this.list.splice(index,1)
+      this.list.splice(index, 1)
     },
     checkedChange (index) {
       this.list[index].ifdone = !this.list[index].ifdone
     },
     listernClick (index) {
-      window.addEventListener('click',this.todoitemChange(index))
+      window.addEventListener('click', this.todoitemChange(index))
     }
   }
 }
 </script>
 
 <style lang="stylus" >
-  .home-header
-    text-align: center
-  .home-itemalldone
-    transform:rotate(90deg)
+.home-header
+  text-align center
+
+.home-itemalldone
+  transform rotate(90deg)
 </style>
 
