@@ -33,7 +33,7 @@
         v-show="item.ifchange"
         v-model="item.content"
         @keydown.13="todoitemChange(index)"
-        @mouseleave="listernClick(index)"
+        @blur="todoitemChange(index)"
         >
         <button
         v-show="item.ifDestroyBtn"
@@ -59,11 +59,32 @@ export default {
     }
   },
   computed: {
-    
+    activeCount: {
+      get: function () {
+        let count = 0
+      this.list.forEach((value) => {
+        if (!value.ifdone) {
+          count += 1
+        }
+      })
+      return count
+      },
+      set: function (val) {
+        console.log(this.$refs.todolist)
+      }
+    }
   },
   data () {
     return {
       newitem: ''
+    }
+  },
+  watch: {
+    list: function () {
+        console.log(this.$refs.todolist)
+        this.$refs.todolist.forEach((value) => {
+          value.checked = false
+        })
     }
   },
   methods: {
@@ -98,7 +119,6 @@ export default {
     },
     todoitemChange (index) {
       this.list[index].ifchange = !this.list[index].ifchange
-      console.log(this.list[index].ifchange)
     },
     showDstryBtn (index) {
       this.list[index].ifDestroyBtn = true

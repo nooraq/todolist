@@ -30,11 +30,13 @@ export default {
   },
   methods: {
     cleanCompletedItem () {
-      this.list.forEach((value,index) => {
-        if(value.ifdone) {
-          this.list.splice(index,1)
+      const length = this.list.length
+      for (let i = length-1; i > -1; i -= 1){
+        if (this.list[i].ifdone) {
+          this.list.splice(i, 1)
         }
-      })
+      }
+      console.log(this.list)
     }
   }
 }
