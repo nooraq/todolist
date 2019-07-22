@@ -18,6 +18,7 @@
       <li
       v-for="(item, index) of list"
       :key="index"
+      v-show="item.ifshow"
       @mouseenter="showDstryBtn(index)"
       @mouseleave="notShowDstryBtn(index)"
       >
@@ -58,32 +59,26 @@ export default {
       }
     }
   },
-  computed: {
-    activeCount: {
-      get: function () {
-        let count = 0
-      this.list.forEach((value) => {
-        if (!value.ifdone) {
-          count += 1
-        }
-      })
-      return count
-      },
-      set: function (val) {
-        console.log(this.$refs.todolist)
-      }
-    }
-  },
   data () {
     return {
       newitem: ''
     }
   },
   watch: {
-    list: function () {
-        console.log(this.$refs.todolist)
-        this.$refs.todolist.forEach((value) => {
-          value.checked = false
+    list() {
+      let length = 0
+      if(!this.$refs.todolist){
+        length = 0
+      }else{
+        length = this.$refs.todolist.length
+      }
+      console.log(length)
+        this.$nextTick( () => {
+          console.log(this.list.length)
+            if (this.list.length < length) {
+            this.$refs.todolist.forEach((value) => {
+            value.checked = false
+          })}
         })
     }
   },
@@ -94,8 +89,13 @@ export default {
         ifchange: false,
         ifDestroyBtn: false,
         ifdone: false,
+        ifshow: true,
         content: newitem
       })
+      console.log(this.$route.params.itemlist)
+      if (this.$route.params.itemlist === 'Complete') {
+        this.list[this.list.length - 1].ifshow = false
+      }
       this.newitem = ''
     },
     BtnClick () {

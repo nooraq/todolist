@@ -4,8 +4,8 @@
    <br>
    <router-link to="/All">All</router-link>
    <router-link to="/Active">Active</router-link>
-   <router-link to="/complete">complete</router-link>
-   <button @click="cleanCompletedItem">completed</button>
+   <router-link to="/Complete">Complete</router-link>
+   <button @click="cleanCompletedItem"> clean completed</button>
   </div>
 </template>
 
@@ -36,7 +36,35 @@ export default {
           this.list.splice(i, 1)
         }
       }
-      console.log(this.list)
+    }
+  },
+  watch: {
+    $route () {
+      console.log(this.$route.params)
+      console.log(this.$route.params.itemlist)
+      if(this.$route.params.itemlist === 'Complete'){
+        this.list.forEach((value) => {
+          if (!value.ifdone) {
+            value.ifshow = false
+          }else {
+            value.ifshow = true
+          }
+        })
+      }
+      if(this.$route.params.itemlist === 'Active'){
+        this.list.forEach((value) => {
+          if (value.ifdone) {
+            value.ifshow = false
+          }else{
+            value.ifshow = true
+          }
+        })
+      }
+      if(this.$route.params.itemlist === 'All'){
+        this.list.forEach((value) => {
+          value.ifshow = true
+        })
+      }
     }
   }
 }
